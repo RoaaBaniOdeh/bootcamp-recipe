@@ -8,18 +8,23 @@ app.use(express.static(path.join(__dirname,'node_modules')))
   
 let recipes = []
 
-
- axioss.get('https://recipes-goodness.herokuapp.com/recipes')
+const getRecpe = function (recipename, responses) {
+ axioss.get('https://recipes-goodness.herokuapp.com/recipes/${recipename}')
  .then(function (response) {
     // handle success
-    recipes = {
-        response.data.results.map(
-            
-        )
-    }
-    console.log(recipes);
 
-  })
+
+   
+        recipes = result.data.results.map((recipe) => {
+          return {
+            ingredients: recipe.ingredients,
+            title: recipe.title,
+            thumbnail: recipe.thumbnail,
+            href: recipe.href,
+          };
+        });
+        responses.send(recipes);
+    })
   .catch(function (error) {
     // handle error
     console.log(error);
@@ -30,7 +35,7 @@ let recipes = []
 
 
 
-
+}
 
 
 // Serving DATA
